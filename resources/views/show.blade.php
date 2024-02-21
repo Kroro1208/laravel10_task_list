@@ -9,5 +9,3 @@
 <p>{{$task->long_Description}}</p>
 @endif
 
-<p>{{$task->created_at}}</p>
-<p>{{$task->updated_at}}</p>

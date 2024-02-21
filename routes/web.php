@@ -27,8 +27,11 @@ Route::get('/tasks', function () {
     return view('index', ['tasks' => Task::latest()->get()]); // Task::latest()->where('completed', true)->get()
 })->name('tasks.index');
 
-Route::get('/tasks/{id}', function ($id) {
+Route::get('/tasks/{id}/edit', function ($id) {
+    return view('edit', ['task' => Task::findOrFail($id)]);
+})->name('tasks.edit');
 
+Route::get('/tasks/{id}', function ($id) {
     return view('show', ['task' => Task::findOrFail($id)]);
 })->name('tasks.show');
 
@@ -49,6 +52,23 @@ Route::post('/tasks', function (Request $request) {
     return redirect()->route('tasks.show', ['id' => $task->id])
         ->with('success', 'タスクが追加されました');
 })->name('tasks.store');
+
+Route::put('/tasks/{id}', function ($id, Request $request) {
+    // dd($request->all());
+    $data = $request->validate([
+        'title' => 'required|max:255',
+        'description' => 'required',
+        'long_description' => 'required'
+    ]);
+
+    $task = Task::findOrFail($id);
+    $task->title = $data['title'];
+    $task->description = $data['description'];
+    $task->long_description = $data['long_description'];
+    $task->save();
+    return redirect()->route('tasks.show', ['id' => $task->id])
+        ->with('success', 'タスクが更新されました');
+})->name('tasks.update');
 
 
 Route::fallback(function () {
