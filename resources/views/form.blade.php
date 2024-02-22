@@ -43,4 +43,5 @@
         <button type="submit">{{isset($task) ? "更新する" : "追加する"}}</button>
     </div>
 </form>
+<a href="/">タスク一覧へ戻る</a>
 @endsection
