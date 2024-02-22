@@ -10,4 +10,4 @@
 4. Pagination設定
 
 
-![アプリデモ](README.md)
+![アプリデモ](/readme.gif)
