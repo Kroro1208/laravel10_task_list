@@ -27,12 +27,20 @@ Route::get('/tasks', function () {
     return view('index', ['tasks' => Task::latest()->get()]); // Task::latest()->where('completed', true)->get()
 })->name('tasks.index');
 
-Route::get('/tasks/{id}/edit', function ($id) {
-    return view('edit', ['task' => Task::findOrFail($id)]);
+// Laravel のルートモデルバインディング
+// ルートパラメータを{id}から{task}に変更すると、Laravelのルートモデルバインディングがより直感的に機能する
+// これは、LaravelがリクエストされたURLのパラメータを自動的に適切なモデルインスタンスに紐づけてくれる
+Route::get('/tasks/{task}/edit', function (Task $task) {
+    return view('edit', ['task' => $task]);
 })->name('tasks.edit');
 
-Route::get('/tasks/{id}', function ($id) {
-    return view('show', ['task' => Task::findOrFail($id)]);
+// 以下のように記載する必要はない
+// Route::get('/tasks/{id}/edit', function ($id) {
+//     return view('edit', ['task' => Task::findOrFail($id)]);
+// })->name('tasks.edit');
+
+Route::get('/tasks/{task}', function (Task $task) {
+    return view('show', ['task' => $task]);
 })->name('tasks.show');
 
 
@@ -53,7 +61,7 @@ Route::post('/tasks', function (Request $request) {
         ->with('success', 'タスクが追加されました');
 })->name('tasks.store');
 
-Route::put('/tasks/{id}', function ($id, Request $request) {
+Route::put('/tasks/{task}', function (Task $task, Request $request) {
     // dd($request->all());
     $data = $request->validate([
         'title' => 'required|max:255',
@@ -61,12 +69,11 @@ Route::put('/tasks/{id}', function ($id, Request $request) {
         'long_description' => 'required'
     ]);
 
-    $task = Task::findOrFail($id);
     $task->title = $data['title'];
     $task->description = $data['description'];
     $task->long_description = $data['long_description'];
     $task->save();
-    return redirect()->route('tasks.show', ['id' => $task->id])
+    return redirect()->route('tasks.show', ['task' => $task->id])
         ->with('success', 'タスクが更新されました');
 })->name('tasks.update');
 
