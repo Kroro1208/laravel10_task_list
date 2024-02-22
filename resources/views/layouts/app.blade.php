@@ -8,6 +8,8 @@
 
 <body>
     <h1>@yield('title')</h1>
+    @yield('button')
+    <br>
     <div>
         @if(session()->has('success'))
         <div>{{session('success')}}</div>

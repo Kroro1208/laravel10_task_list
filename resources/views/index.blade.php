@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('title', 'There are my Tasks!')
+@section('button')
+<form method="GET" action="{{route('create')}}">
+    <button type="submit">タスクを追加する</button>
+</form>
+@endsection
 
 @section('content')
 @forelse($tasks as $task)

@@ -17,7 +17,6 @@
 
 <div>
     <form method="GET" action="{{route('tasks.edit', ['task'=>$task->id])}}">
-        @csrf
         <button type="submit">編集する</button>
     </form>
 </div>
@@ -28,3 +27,5 @@
         <button type="submit">削除する</button>
     </form>
 </div>
+
+<a href="/">タスク一覧へ戻る</a>
