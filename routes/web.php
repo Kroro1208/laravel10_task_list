@@ -24,7 +24,7 @@ Route::get('/', function () {
 Route::view('/tasks/create', 'create')->name('create');
 
 Route::get('/tasks', function () {
-    return view('index', ['tasks' => Task::latest()->get()]);
+    return view('index', ['tasks' => Task::latest()->paginate(10)]);
 })->name('tasks.index');
 
 // Laravel のルートモデルバインディング
