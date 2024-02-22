@@ -23,9 +23,8 @@ Route::get('/', function () {
 
 Route::view('/tasks/create', 'create')->name('create');
 
-
 Route::get('/tasks', function () {
-    return view('index', ['tasks' => Task::latest()->get()]); // Task::latest()->where('completed', true)->get()
+    return view('index', ['tasks' => Task::latest()->get()]);
 })->name('tasks.index');
 
 // Laravel のルートモデルバインディング
@@ -39,10 +38,8 @@ Route::get('/tasks/{task}', function (Task $task) {
     return view('show', ['task' => $task]);
 })->name('tasks.show');
 
-
 Route::post('/tasks', function (TaskRequest $request) {
     $task = Task::create($request->validated());
-
 
     return redirect()->route('tasks.show', ['task' => $task->id])
         ->with('success', 'タスクが追加されました');
@@ -51,10 +48,15 @@ Route::post('/tasks', function (TaskRequest $request) {
 Route::put('/tasks/{task}', function (Task $task, TaskRequest $request) {
     $task->update($request->validated());
 
-
     return redirect()->route('tasks.show', ['task' => $task->id])
         ->with('success', 'タスクが更新されました');
 })->name('tasks.update');
+
+Route::delete('/tasks/{task}', function (Task $task) {
+    $task->delete();
+    return redirect()->route('tasks.index')
+        ->with('success', "タスクを「{$task->title}」を削除しました");
+})->name('tasks.destroy');
 
 
 Route::fallback(function () {
