@@ -12,4 +12,5 @@ class Task extends Model
     // {
     //     return 'slug';
     // }
+    protected $fillable = ["title", "description", "long_description"];
 }
