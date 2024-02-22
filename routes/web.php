@@ -54,7 +54,7 @@ Route::put('/tasks/{task}', function (Task $task, TaskRequest $request) {
 Route::delete('/tasks/{task}', function (Task $task) {
     $task->delete();
     return redirect()->route('tasks.index')
-        ->with('success', "タスクを「{$task->title}」を削除しました");
+        ->with('success', "タスク「{$task->title}」を削除しました");
 })->name('tasks.destroy');
 
 Route::put('tasks/{task}/toggle-complete', function (Task $task) {
