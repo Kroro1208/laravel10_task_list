@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Task;
 use App\Http\Requests\TaskRequest;
@@ -57,6 +56,12 @@ Route::delete('/tasks/{task}', function (Task $task) {
     return redirect()->route('tasks.index')
         ->with('success', "タスクを「{$task->title}」を削除しました");
 })->name('tasks.destroy');
+
+Route::put('tasks/{task}/toggle-complete', function (Task $task) {
+    $task->toggleComplete();
+    $task->save();
+    return redirect()->back()->with('success', 'タスク状況が更新されました');
+})->name('tasks.toggle-complete');
 
 
 Route::fallback(function () {

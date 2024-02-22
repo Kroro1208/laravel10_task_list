@@ -13,4 +13,9 @@ class Task extends Model
     //     return 'slug';
     // }
     protected $fillable = ["title", "description", "long_description"];
+    public function toggleComplete()
+    {
+        $this->completed = !$this->completed;
+        $this->save();
+    }
 }
